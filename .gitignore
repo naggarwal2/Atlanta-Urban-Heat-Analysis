@@ -1,0 +1,27 @@
+# Ignore heavy raster datasets and GIS raw images
+*.tif
+*.tiff
+*.gif
+
+# Ignore Python virtual environment and cache
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# Keep aggregated CSV and geojson boundaries tracked
+!aggregated_data.csv
+!*.geojson
+
+# Ignore heavy raw NLCD raster folder
+NLCD Land Cover Data 2023/
+*.tiff
+*.tif
+venv/
+
+# Ignore Inference Log
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+inference.log

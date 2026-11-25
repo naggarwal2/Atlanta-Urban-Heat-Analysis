@@ -1,0 +1,47 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+df_eda = df_cleaned.copy()
+
+# basic descriptive statistics
+print("Summary Statistics")
+display(df_eda.describe().round(2))
+
+# Choosing plotting style theme
+sns.set_theme(style="whitegrid")
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+
+# Distribution of the Target Variable (LST Mean)
+sns.histplot(df_eda['lst_mean_c'], kde=True, ax=axes[0, 0], color='salmon')
+axes[0, 0].set_title('Distribution of Mean Land Surface Temperature (°C)')
+axes[0, 0].set_xlabel('LST Mean (°C)')
+
+# Correlation Heatmap of Numeric Features
+numeric_cols = df_eda.select_dtypes(include=[np.number]).columns
+corr_matrix = df_eda[numeric_cols].corr()
+sns.heatmap(corr_matrix[['lst_mean_c']].sort_values(by='lst_mean_c', ascending=False),
+            annot=True, cmap='coolwarm', fmt=".2f", ax=axes[0, 1])
+axes[0, 1].set_title('Correlation of Features with Mean LST')
+
+# Scatterplot-Tree Canopy vs LST
+sns.scatterplot(data=df_eda, x='tree_canopy_per_sq_meter_unit', y='lst_mean_c', alpha=0.7, ax=axes[1, 0], color='forestgreen')
+sns.regplot(data=df_eda, x='tree_canopy_per_sq_meter_unit', y='lst_mean_c', scatter=False, ax=axes[1, 0], color='darkgreen')
+axes[1, 0].set_title('Tree Canopy Ratio vs. LST')
+axes[1, 0].set_xlabel('Tree Canopy (sq m per unit area)')
+axes[1, 0].set_ylabel('LST Mean (°C)')
+
+# Scatterplot-Impervious Surfaces vs LST
+sns.scatterplot(data=df_eda, x='impervious_surfaces_per_sq_meter_unit', y='lst_mean_c', alpha=0.7, ax=axes[1, 1], color='indigo')
+sns.regplot(data=df_eda, x='impervious_surfaces_per_sq_meter_unit', y='lst_mean_c', scatter=False, ax=axes[1, 1], color='black')
+axes[1, 1].set_title('Impervious Surfaces Ratio vs. LST')
+axes[1, 1].set_xlabel('Impervious Surfaces (sq m per unit area)')
+axes[1, 1].set_ylabel('LST Mean (°C)')
+
+plt.tight_layout()
+plt.show()
+
+# Print strongest correlations
+print("\n Top Feature Correlations with Mean LST ")
+print(corr_matrix['lst_mean_c'].sort_values(ascending=False))

@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+joblib
+numpy
+pandas
+scikit-learn
+pydantic
+streamlit
+geopandas
+plotly
+requests
+pytest
+httpx
